@@ -6,7 +6,7 @@
 | Name | @userscripters/all-communities-loader |
 | Description | Userscript for loading all communities in the 'visible communities' list |
 | License | [GPL-3.0-or-later](https://spdx.org/licenses/GPL-3.0-or-later) |
-| Version | 0.1.0 |
+| Version | 1.0.0 |
 
 # Support
 
