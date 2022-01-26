@@ -130,12 +130,41 @@ type ApiFetchOptions = {
         return sites.filter(({ site_name }) => !hiddenIds.has(siteIdMap.get(normalizeSiteName(site_name)) || ""));
     };
 
-    const getAssociatedSites = (accountId: number | string) => {
-        return fetchAPI<Pick<StackExchangeAPI.NetworkUser, "site_name" | "site_url">>(
+    const getAssociatedSites = async (accountId: number | string) => {
+        const sites = await fetchAPI<Pick<StackExchangeAPI.NetworkUser, "site_name" | "site_url">>(
             "get",
             `/users/${accountId}/associated`,
             { key: API_KEY, filter: "*zKJspW7L9qK1Q8K" }
         );
+
+        // if we want to get Area 51 in the list, we must scrape
+        // see https://stackapps.com/q/8726/78873
+        const res = await new Promise<Tampermonkey.Response<any>>((resolve, reject) => {
+            GM_xmlhttpRequest({
+                url: `https://stackexchange.com/users/${accountId}?tab=accounts`,
+                onload: resolve,
+                onerror: reject
+            });
+        });
+
+        const { status, responseText } = res;
+        if (status !== 200) return sites;
+
+        const doc$ = $(responseText);
+        const accountElems = doc$.find(".account-site").get();
+
+        const area51row = accountElems.find((elem) => elem.querySelector("a[href*=area51]"));
+
+        const siteElem = area51row?.querySelector<HTMLAnchorElement>("h2 > a");
+        if (siteElem) {
+            const { href, textContent } = siteElem;
+            sites.push({
+                site_name: normalizeSiteName(textContent || ""),
+                site_url: href.replace(/\/users.*$/, "")
+            });
+        }
+
+        return sites;
     };
 
     const createVisibleCommunityRow = (siteName: string, siteUrl: string, siteId: string, iconUrl: string, disableHideButton = false) => {
