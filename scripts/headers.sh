@@ -4,8 +4,11 @@ dist="dist"
 output=$dist"/headers.js"
 
 generate tampermonkey \
+    -g fetch \
     -o $output \
-    -m $(cat .matches) \
+    -m all meta https://domain/users/hidecommunities/* \
+    -w "stackexchange.com" \
+    --collapse \
     --pretty
 
 userscript="$(find -iwholename "./$dist/*\.js" -type f -not -iname "*headers\.js")"

@@ -16,6 +16,7 @@
         "outDir": "dist",
         "types": [
             "@userscripters/stackexchange-global-types",
+            "@userscripters/stackexchange-api-types",
             "jquery",
             "greasemonkey",
             "tampermonkey"
