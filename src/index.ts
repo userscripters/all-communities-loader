@@ -19,6 +19,9 @@ type ApiFetchOptions = {
 
     const selectors = {
         wrapper: ".js-community-lists",
+        input: {
+            prompt: ".js-community-lists > div > div > p"
+        },
         visible: {
             list: {
                 rows: "div:not(:first-child):is(.js-community-lists > div > div)",
@@ -310,6 +313,9 @@ type ApiFetchOptions = {
         });
 
         listWrapper.append(...rows);
+
+        // removes the "Showing M communit[y|ies] out of N" prompt
+        communitiesWrapper.querySelector(selectors.input.prompt)?.remove();
     };
 
     w.addEventListener("load", async () => {
