@@ -197,6 +197,35 @@ type ApiFetchOptions = {
         });
     };
 
+    const getHiddenCommunitiesIds = async () => {
+        const ids = new Set<string>();
+
+        const [communitiesWrapper] = await waitFor(d, selectors.wrapper);
+
+        if (!communitiesWrapper) {
+            console.debug(`${scriptName}: hidden communities wrapper not found`);
+            return ids;
+        }
+
+        const [listWrapper] = await waitFor(
+            communitiesWrapper,
+            selectors.hidden.list.wrapper
+        );
+
+        if (!listWrapper) {
+            console.debug(`${scriptName}: hidden communities list wrapper not found`);
+            return ids;
+        }
+
+        const unhideBtns = await waitFor(listWrapper, selectors.hidden.list.buttons);
+        unhideBtns.forEach((btn) => {
+            const siteId = btn.getAttribute("data-site-id");
+            if (siteId) ids.add(siteId);
+        });
+
+        return ids;
+    };
+
     const updateVisibleCommunitiesList = async (
         sites: Pick<StackExchangeAPI.NetworkUser, "site_name" | "site_url">[],
         siteIdMap: Map<string, string>,
@@ -265,35 +294,6 @@ type ApiFetchOptions = {
         const siteIdMap = await getAllSitesIds();
 
         console.debug(`${scriptName}: ${siteIdMap.size} site ids fetched`);
-
-        const getHiddenCommunitiesIds = async () => {
-            const ids = new Set<string>();
-
-            const [communitiesWrapper] = await waitFor(d, selectors.wrapper);
-
-            if (!communitiesWrapper) {
-                console.debug(`${scriptName}: hidden communities wrapper not found`);
-                return ids;
-            }
-
-            const [listWrapper] = await waitFor(
-                communitiesWrapper,
-                selectors.hidden.list.wrapper
-            );
-
-            if (!listWrapper) {
-                console.debug(`${scriptName}: hidden communities list wrapper not found`);
-                return ids;
-            }
-
-            const unhideBtns = await waitFor(listWrapper, selectors.hidden.list.buttons);
-            unhideBtns.forEach((btn) => {
-                const siteId = btn.getAttribute("data-site-id");
-                if (siteId) ids.add(siteId);
-            });
-
-            return ids;
-        };
 
         const hiddenIds = await getHiddenCommunitiesIds();
 
