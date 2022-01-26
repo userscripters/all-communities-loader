@@ -302,18 +302,20 @@ type ApiFetchOptions = {
         await updateVisibleCommunitiesList(sites, siteIdMap, siteIconMap, hiddenIds);
 
         $(d).ajaxComplete((_, __, { url, data }) => {
-            if (!url?.endsWith("/hide") || !data) return;
+            if (!url || !["/hide", "/unhide"].some((p) => url.endsWith(p)) || !data) return;
 
             const siteId = typeof data === "object" ?
                 data.siteId :
                 new URLSearchParams(data).get("siteId");
 
             if (!siteId) {
-                console.debug(`${scriptName}: missing site-id of the hidden site`);
+                console.debug(`${scriptName}: missing site-id of the updated site`);
                 return;
             }
 
-            hiddenIds.add(siteId);
+            url.endsWith("/hide") ?
+                hiddenIds.add(siteId) :
+                hiddenIds.delete(siteId);
 
             updateVisibleCommunitiesList(sites, siteIdMap, siteIconMap, hiddenIds);
         });
