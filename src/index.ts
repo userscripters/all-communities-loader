@@ -93,6 +93,13 @@ type ApiFetchOptions = {
 
         const map = new Map<string, string>();
         sites.forEach(({ icon_url, site_url }) => map.set(site_url, icon_url));
+
+        // Area 51 is not returned from any of the API endpoints
+        map.set(
+            "https://area51.stackexchange.com",
+            "https://cdn.sstatic.net/Sites/area51/Img/icon-48.png"
+        );
+
         return map;
     };
 
