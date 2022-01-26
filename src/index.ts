@@ -126,6 +126,9 @@ type ApiFetchOptions = {
             idMap.set(name, href.replace(/\D/g, ""));
         });
 
+        // Area 51 is not present on the reputation leagus page
+        idMap.set("Area 51", "11");
+
         return idMap;
     };
 
