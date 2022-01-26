@@ -256,6 +256,11 @@ type ApiFetchOptions = {
             return ids;
         }
 
+        if (listWrapper.classList.contains("s-empty-state")) {
+            console.debug(`${scriptName}: no hidden communities found`);
+            return ids;
+        }
+
         const unhideBtns = await waitFor(listWrapper, selectors.hidden.list.buttons);
         unhideBtns.forEach((btn) => {
             const siteId = btn.getAttribute("data-site-id");
