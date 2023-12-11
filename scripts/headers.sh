@@ -3,7 +3,7 @@
 dist="dist"
 output=$dist"/headers.js"
 
-generate tampermonkey \
+generate-headers tampermonkey \
     -g fetch \
     -o $output \
     -m all meta https://domain/users/hidecommunities/* \

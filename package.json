@@ -3,7 +3,7 @@
     "version": "1.0.0",
     "description": "Userscript for loading all communities in the 'visible communities' list",
     "scripts": {
-        "test": "mocha",
+        "test": "TS_NODE_PROJECT='./test/tsconfig.json' mocha",
         "lint": "eslint src --fix --ext .js,.ts",
         "clean": "rm -rf dist",
         "prebuild": "npm run lint && npm run clean",
@@ -40,11 +40,11 @@
         "@types/greasemonkey": "^4.0.7",
         "@types/jquery": "^3.5.29",
         "@types/mocha": "^10.0.6",
-        "@types/node": "^18.19.1",
-        "@types/tampermonkey": "^4.20.4",
-        "@typescript-eslint/eslint-plugin": "^5.62.0",
-        "@typescript-eslint/parser": "^5.62.0",
-        "@userscripters/generate-headers": "^3.4.0",
+        "@types/node": "^20.10.4",
+        "@types/tampermonkey": "^5.0.2",
+        "@typescript-eslint/eslint-plugin": "^6.14.0",
+        "@typescript-eslint/parser": "^6.14.0",
+        "@userscripters/generate-headers": "^3.4.1",
         "@userscripters/generate-readme": "^2.3.1",
         "@userscripters/stackexchange-api-types": "^3.4.0",
         "@userscripters/stackexchange-global-types": "^2.7.0",
@@ -52,8 +52,9 @@
         "chai-as-promised": "^7.1.1",
         "eslint": "^8.55.0",
         "mocha": "^10.2.0",
-        "ts-node": "^10.9.1",
-        "typescript": "^4.9.5",
+        "ts-node": "^10.9.2",
+        "typescript": "^5.3.3",
         "uglify-js": "^3.17.4"
-    }
+    },
+    "type": "module"
 }
